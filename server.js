@@ -1,5 +1,6 @@
 // Dependencies
 var express = require("express");
+var exphbs = require("express-handlebars");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
@@ -17,6 +18,10 @@ mongoose.Promise = Promise;
 
 // Initialize Express
 var app = express();
+
+// Set Handlebars as default templating engine
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 // Use morgan and body parser with our app
 app.use(logger("dev"));
@@ -45,6 +50,10 @@ db.once("Open", function() {
 // ======
 
 // A GET request to scrape ARS Technicas website
+app.get("/", function(req, res) {
+    res.render("index");
+});
+
 app.get("/scrape", function(req, res) {
 
     console.log("\n***********************************\n" +
@@ -80,50 +89,47 @@ app.get("/scrape", function(req, res) {
 });
 
 // A GET request to return the articles we scraped from the mongoDB
-app.get("/articles",function(req,res){
-    Article.find({},function(error,doc){
-        if(error){
+app.get("/articles", function(req, res) {
+    Article.find({}, function(error, doc) {
+        if (error) {
             console.log(error);
-        }
-        else{
-            res.json(doc);
+        } else {
+            console.log(doc);
+            res.render("index", { articles: doc });
         }
     });
 });
 
 // A GET request for a article by id
-app.get("/articles/:id",function(req,res){
-    Article.findOne({"_id": req.params.id})
-    .populate("note")
-    .exec(function(error,doc){
-        if (error){
-            console.log(error);
-        }
-        else{
-            res.pjson(doc);
-        }
-    });
+app.get("/articles/:id", function(req, res) {
+    Article.findOne({ "_id": req.params.id })
+        .populate("note")
+        .exec(function(error, doc) {
+            if (error) {
+                console.log(error);
+            } else {
+                res.pjson(doc);
+            }
+        });
 });
 
 
 // A POST request to create a new note
-app.post("/articles/:id",function(req,res){
+app.post("/articles/:id", function(req, res) {
     var newNote = new Note(req.body);
 
-    newNote.save(function(error,doc){
-        if(error){
+    newNote.save(function(error, doc) {
+        if (error) {
             console.log(error);
-        }
-        else{
-            Article.findOneAndUpdate({"_id":req.params.id},{"note":doc._id})
-            .exec(function(err,doc){
-                if (err){
-                    console.log(err);
-                }
-                else{
-                    res.send(doc);
-                }
-            });
+        } else {
+            Article.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
+                .exec(function(err, doc) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        res.send(doc);
+                    }
+                });
         }
     });
 });
