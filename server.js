@@ -36,12 +36,11 @@ app.use(express.static("public"));
 var databaseUri = 'mongodb://localhost/arsTechnicaScrape';
 
 if (process.env.MONGODB_URI) {
-    mongoose.connect('mongodb://heroku_sqptph52:1234mysql1234@ds155631.mlab.com:55631/heroku_sqptph52');
+    mongoose.connect(process.env.MONGODB_URI);
 } else {
     mongoose.connect(databaseUri);
 }
 
-// mongoose.connect("mongodb://localhost/arsTechnicaScrape");
 var db = mongoose.connection;
 
 // Show any mongoose errors
