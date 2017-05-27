@@ -41,7 +41,7 @@ if (process.env.MONGODB_URI) {
     mongoose.connect(databaseUri);
 }
 
-mongoose.connect("mongodb://localhost/arsTechnicaScrape");
+// mongoose.connect("mongodb://localhost/arsTechnicaScrape");
 var db = mongoose.connection;
 
 // Show any mongoose errors
@@ -49,7 +49,7 @@ db.on("error", function (error) {
     console.log("Mongoose Error: " + error);
 });
 
-// Once logged in to the db through mongoos, log a success message
+// Once logged in to the db through mongoose, log a success message
 db.once("Open", function () {
     console.log("Mongoose connection successful.");
 });
