@@ -14,6 +14,7 @@
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
     <script src="js/index.js"></script>
+    <script src="js/saved.js"></script>
 
 </head>
 
@@ -22,8 +23,8 @@
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a herf="/">Home</a></li>
-                    <li><a href="/saved">Saved Articles</a></li>
+                    <li><a herf="/">Home</a></li>
+                    <li><a class="active" href="/saved">Saved Articles</a></li>
                 </ul>
             </div>
         </nav>
@@ -32,19 +33,19 @@
             <div class="container">
                 <h1>ARS Technica - Top Articles</h1>
                 <p>See todays top articles and leave comments</p>
-                <p><a class="btn btn-primary btn-lg" role="button" id="scrape-news-button">Scrape articles</a></p>
+                {{!--<p><a class="btn btn-primary btn-lg" role="button" id="scrape-news-button">Scrape articles</a></p>--}}
             </div>
         </div>
     </header>
 
-    <h1> Todays Articles:</h1>
+    <h1> Your Saved Articles:</h1>
 
     <div class="container">
 
         <div class="col-md-12">
             <div class="panel panel-default">
                 <ul class="list-group">
-                    {{#each articles}} {{#unless this.saved}}
+                    {{#each articles}} {{#if this.saved}}
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col-md-8">
@@ -55,11 +56,13 @@
                                 <p>{{this.articleDateTime}}</p>
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-primary save-article-button" data-value="{{this._id}}" type="submit">Save Article</button>
+                                <button type="button" class="btn btn-primary add-note-button" id="add-note-button" data-toggle="modal" data-value="{{this._id}}"
+                                    data-target=".notes-modal">Add Notes</button>
+                                <button type="button" class="btn btn-danger remove-article-button" data-value="{{this._id}}" type="submit">Remove Article</button>
                             </div>
                         </div>
                     </li>
-                    {{/unless}} {{/each}}
+                    {{/if}} {{/each}}
                 </ul>
             </div>
         </div>
@@ -81,16 +84,15 @@
                                 </div>
                             </div>
                         </div>
-                        <textarea class="form-control" id="note-textarea" rows="3"></textarea>
+                        <textarea class="form-control" id="note-textarea" rows="5"></textarea>
                         <div class="modal-footer">
                             <button class="btn btn-success" id="save-note-button" data-dismiss="modal">Save Note</button>
-                            <button class="btn btn-danger" id="remove-note-button" data-dismiss="modal">Delete Note</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</body>
 
-</html>
+
+</body>

@@ -16,16 +16,19 @@ var ArticleSchema = new Schema({
     },
     byLine: {
         type: String,
-        required: true
     },
     articleDateTime: {
         type: String,
         required: true
     },
-    note: {
+    saved: {
+        type: Boolean,
+        default: false
+    },
+    notes: [{
         type: Schema.Types.ObjectId,
         ref: "Note"
-    }
+    }]
 });
 
 // Creat the Article model woth the ArticleSchema
