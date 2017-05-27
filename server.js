@@ -36,7 +36,7 @@ app.use(express.static("public"));
 var databaseUri = 'mongodb://localhost/arsTechnicaScrape';
 
 if (process.env.MONGODB_URI) {
-    mongoose.connect(process.env.MONGODB_URI);
+    mongoose.connect('mongodb://heroku_sqptph52:m6a6nddt4q8aub4t3kvkf0mpje@ds155631.mlab.com:55631/heroku_sqptph52');
 } else {
     mongoose.connect(databaseUri);
 }
