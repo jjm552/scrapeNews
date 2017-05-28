@@ -13,8 +13,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-    <script src="js/index.js"></script>
-    <script src="js/saved.js"></script>
+    {{!--<script src="js/index.js"></script>
+    <script src="js/saved.js"></script>--}}
 
 </head>
 
@@ -23,8 +23,8 @@
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <ul class="nav navbar-nav">
-                    <li><a herf="/">Home</a></li>
-                    <li><a class="active" href="/saved">Saved Articles</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li class="active" ><a href="/saved">Saved Articles</a></li>
                 </ul>
             </div>
         </nav>
@@ -33,7 +33,6 @@
             <div class="container">
                 <h1>ARS Technica - Top Articles</h1>
                 <p>See todays top articles and leave comments</p>
-                {{!--<p><a class="btn btn-primary btn-lg" role="button" id="scrape-news-button">Scrape articles</a></p>--}}
             </div>
         </div>
     </header>

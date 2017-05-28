@@ -1,8 +1,8 @@
 // Dependencies
 var express = require("express");
-var exphbs = require("express-handlebars");
+// var exphbs = require("express-handlebars");
 var bodyParser = require("body-parser");
-var logger = require("morgan");
+// var logger = require("morgan");
 var mongoose = require("mongoose");
 
 // Requiring our Note and Article modles
@@ -19,12 +19,8 @@ mongoose.Promise = Promise;
 // Initialize Express
 var app = express();
 
-// Set Handlebars as default templating engine
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
-
 // Use morgan and body parser with our app
-app.use(logger("dev"));
+// app.use(logger("dev"));
 app.use(bodyParser.urlencoded({
     extended: false
 }));
@@ -32,15 +28,22 @@ app.use(bodyParser.urlencoded({
 // Make public a static dir
 app.use(express.static("public"));
 
+// Set Handlebars as default templating engine
+var exphbs = require("express-handlebars");
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
 //Database configuration with mongoose
 var databaseUri = 'mongodb://localhost/arsTechnicaScrape';
 
 if (process.env.MONGODB_URI) {
-    mongoose.connect('mongodb://heroku_sqptph52:m6a6nddt4q8aub4t3kvkf0mpje@ds155631.mlab.com:55631/heroku_sqptph52');
+    // mongoose.connect('mongodb://heroku_sqptph52:m6a6nddt4q8aub4t3kvkf0mpje@ds155631.mlab.com:55631/heroku_sqptph52');
+    mongoose.connect(process.env.MONGODB_URI);
 } else {
-    mongoose.connect(databaseUri);
+    mongoose.connect('mongodb://localhost/arsTechnicaScrape');
 }
 
+// mongoose.connect("mongodb://localhost/arsTechnicaScrape");
 var db = mongoose.connection;
 
 // Show any mongoose errors
@@ -58,13 +61,13 @@ db.once("Open", function () {
 
 // A GET request to scrape ARS Technicas website
 app.get("/", function (req, res) {
-   Article.find({saved: false}, function(err, result){
-       if (err){
-           console.log(err);
-       } else{
-           res.render("index", {articles: result});
-       }
-   });
+    Article.find({ saved: false }, function (err, result) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("index", { articles: result });
+        }
+    });
 });
 
 app.get("/scrape", function (req, res) {
@@ -88,22 +91,31 @@ app.get("/scrape", function (req, res) {
             // Use Article model to create a new entry
             var entry = new Article(result);
 
-            // Promise used to wait for scrape results
-            promise = entry.save(function (err, doc) {
-                if (err) {
-                    console.log(err);
-                }
+            // entry.save(function (err, doc) {
+            //     if (err) {
+            //         console.log(err);
+            //     } else {
+            //         console.lod(doc);
+            //     }
+
+                // Promise used to wait for scrape results
+                promise = entry.save(function (err, doc) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
             });
+            if (promise instanceof Promise) {
+                promise.then(function (result) {
+                    res.send("ARS Technica Scraped");
+                });
+            } else {
+                res.status(400);
+                res.send('Error');
+            }
         });
-        if (promise instanceof Promise) {
-            promise.then(function (result) {
-                res.send("ARS Technica Scraped");
-            });
-        } else {
-            res.status(400);
-            res.send('Error');
-        }
-    });
+    
+    // res.send("Scraped");
 });
 
 // A POST request to set article to saved
@@ -176,7 +188,7 @@ app.post("/articles/:id", function (req, res) {
 
 // A DELETE request to remove a note 
 app.delete("/deleteNote/:id", function (req, res) {
-    Note.remove({'_id': req.params.id }, function (err, doc) {
+    Note.remove({ '_id': req.params.id }, function (err, doc) {
         if (err) {
             console.log(error);
         } else {
