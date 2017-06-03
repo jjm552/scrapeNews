@@ -13,7 +13,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-    {{!--<script src="js/index.js"></script>
+    {{!--
+    <script src="js/index.js"></script>
     <script src="js/saved.js"></script>--}}
 
 </head>
@@ -24,7 +25,7 @@
             <div class="container">
                 <ul class="nav navbar-nav">
                     <li><a href="/">Home</a></li>
-                    <li class="active" ><a href="/saved">Saved Articles</a></li>
+                    <li class="active"><a href="/saved">Saved Articles</a></li>
                 </ul>
             </div>
         </nav>
@@ -47,16 +48,21 @@
                     {{#each articles}} {{#if this.saved}}
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-4">
+                                <figure style={{this.articleImage}}>
+                                    <div></div>
+                                </figure>
+                            </div>
+                            <div class="col-md-6">
                                 <a href="{{this.link}}">
                                     <h2>{{this.title}}</h2>
                                 </a>
                                 <p>By:{{this.byLine}}</p>
                                 <p>{{this.articleDateTime}}</p>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <button type="button" class="btn btn-primary add-note-button" id="add-note-button" data-toggle="modal" data-value="{{this._id}}"
-                                    data-target=".notes-modal">Add Notes</button>
+                                    data-target=".notes-modal">Add Notes</button><br><br>
                                 <button type="button" class="btn btn-danger remove-article-button" data-value="{{this._id}}" type="submit">Remove Article</button>
                             </div>
                         </div>

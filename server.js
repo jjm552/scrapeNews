@@ -1,8 +1,8 @@
 // Dependencies
 var express = require("express");
-// var exphbs = require("express-handlebars");
+var exphbs = require("express-handlebars");
 var bodyParser = require("body-parser");
-// var logger = require("morgan");
+var logger = require("morgan");
 var mongoose = require("mongoose");
 
 // Requiring our Note and Article modles
@@ -20,7 +20,7 @@ mongoose.Promise = Promise;
 var app = express();
 
 // Use morgan and body parser with our app
-// app.use(logger("dev"));
+app.use(logger("dev"));
 app.use(bodyParser.urlencoded({
     extended: false
 }));
@@ -37,7 +37,6 @@ app.set("view engine", "handlebars");
 var databaseUri = 'mongodb://localhost/arsTechnicaScrape';
 
 if (process.env.MONGODB_URI) {
-    // mongoose.connect('mongodb://heroku_sqptph52:m6a6nddt4q8aub4t3kvkf0mpje@ds155631.mlab.com:55631/heroku_sqptph52');
     mongoose.connect(process.env.MONGODB_URI);
 } else {
     mongoose.connect('mongodb://localhost/arsTechnicaScrape');
@@ -87,16 +86,9 @@ app.get("/scrape", function (req, res) {
             result.link = $(this).children("a").attr("href");
             result.byLine = $(this).children("header").children("p.byline").children("a").children("span").text();
             result.articleDateTime = $(this).children("header").children("p.byline").children("time").text();
-
+            result.articleImage = $(this).children("figure").attr("style");
             // Use Article model to create a new entry
             var entry = new Article(result);
-
-            // entry.save(function (err, doc) {
-            //     if (err) {
-            //         console.log(err);
-            //     } else {
-            //         console.lod(doc);
-            //     }
 
                 // Promise used to wait for scrape results
                 promise = entry.save(function (err, doc) {
@@ -114,8 +106,6 @@ app.get("/scrape", function (req, res) {
                 res.send('Error');
             }
         });
-    
-    // res.send("Scraped");
 });
 
 // A POST request to set article to saved
@@ -196,8 +186,6 @@ app.delete("/deleteNote/:id", function (req, res) {
         }
     });
 });
-
-
 
 // Listen on port 3000
 app.listen(process.env.PORT || 3000, function () {

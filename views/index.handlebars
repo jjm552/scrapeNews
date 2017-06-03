@@ -47,14 +47,19 @@
                     {{#each articles}} {{#unless this.saved}}
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-4">
+                                <figure style={{this.articleImage}}>
+                                    <div></div>
+                                </figure>
+                            </div>
+                            <div class="col-md-6">
                                 <a href="{{this.link}}">
                                     <h2>{{this.title}}</h2>
                                 </a>
                                 <p>By:{{this.byLine}}</p>
                                 <p>{{this.articleDateTime}}</p>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <button class="btn btn-primary save-article-button" data-value="{{this._id}}" type="submit">Save Article</button>
                             </div>
                         </div>
